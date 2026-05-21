@@ -1,1 +1,11 @@
-
+{
+  "name": "exam",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "ts-node src/behavioral/Mediator/test.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
+  }
+}
