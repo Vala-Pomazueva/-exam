@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  activemq:
+    image: rmohr/activemq:latest
+    container_name: activemq-exam
+    ports:
+      - "8161:8161"   # Адмін-панель (admin/admin)
+      - "1883:1883"   # MQTT для Postman
+      - "61614:61614" # WebSockets для браузера
+    volumes:
+      - ./activemq.conf:/opt/activemq/conf/activemq.xml
+    environment:
+      - ACTIVEMQ_ADMIN_USER=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+
+  web-server:
+    image: pierrezemb/gostatic:latest
+    container_name: web-services-exam
+    ports:
+      - "8080:8043"
+    volumes:
+      - ./src:/srv

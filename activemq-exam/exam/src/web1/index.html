@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Service 1</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f2f5; }
+        #log { background: #000; color: #0f0; padding: 10px; height: 200px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h2>Сервіс 1: Чат / Події</h2>
+    <input type="text" id="msg" placeholder="Повідомлення...">
+    <button onclick="send()">Надіслати</button>
+    <div id="log"></div>
+
+    <script>
+        const client = new Paho.MQTT.Client("localhost", 61614, "client_" + Math.random());
+        client.onMessageArrived = (m) => {
+            document.getElementById('log').innerHTML += `<div>> ${m.payloadString}</div>`;
+        };
+        client.connect({onSuccess: () => { 
+            client.subscribe("exam/realtime");
+            console.log("Connected");
+        }});
+        function send() {
+            let val = document.getElementById('msg').value;
+            let m = new Paho.MQTT.Message(val);
+            m.destinationName = "exam/realtime";
+            client.send(m);
+        }
+    </script>
+</body>
+</html>

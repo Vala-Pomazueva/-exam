@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Service 2</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #e3f2fd; }
+        .event { border-bottom: 1px solid #ccc; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Сервіс 2: Моніторинг подій (EDA)</h2>
+    <div id="events"></div>
+
+    <script>
+        const client = new Paho.MQTT.Client("localhost", 61614, "monitor_" + Math.random());
+        client.onMessageArrived = (m) => {
+            const div = document.createElement('div');
+            div.className = 'event';
+            div.innerHTML = `<b>[${new Date().toLocaleTimeString()}]</b> Нова подія: ${m.payloadString}`;
+            document.getElementById('events').prepend(div);
+        };
+        client.connect({onSuccess: () => client.subscribe("exam/realtime")});
+    </script>
+</body>
+</html>
